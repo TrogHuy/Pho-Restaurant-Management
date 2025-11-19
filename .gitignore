@@ -1,0 +1,26 @@
+# --- Eclipse Junk (Do not share these) ---
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.classpath
+.project
+
+# --- Maven Junk ---
+target/
+dependency-reduced-pom.xml
+
+# --- IntelliJ Junk (For teammates not using Eclipse) ---
+.idea/
+*.iml
+
+# --- macOS/Windows Junk ---
+.DS_Store
+Thumbs.db
