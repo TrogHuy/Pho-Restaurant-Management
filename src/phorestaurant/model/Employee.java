@@ -6,12 +6,21 @@ public class Employee {
 	private String full_name;
 	private int salary;
 	
-	public Employee(String full_name, String role, int salary) {
+	// New employee
+	public Employee(String full_name, String role) {
+		this.full_name = full_name;
+		this.role = role; 
+	}
+	
+	// Load employee from DB
+	public Employee(int id, String full_name, String role, int salary) {
 		this.full_name = full_name;
 		this.role = role; 
 		this.salary = salary;
+		this.employee_id = id;
 	}
 	
+	// Getters
 	public int getID() {
 		return this.employee_id;
 	}
@@ -28,15 +37,26 @@ public class Employee {
 		return this.salary;
 	}
 	
-	void setRole(String role) {
+	// Setters
+	public void setId(int id) {
+		this.employee_id = id;
+	}
+	public void setRole(String role) {
 		this.role = role;
 	}
 	
-	void setName(String name) {
+	public void setName(String name) {
 		this.full_name = name;
 	}
 	
-	void setSalary(int salary) {
+	public void setSalary(int salary) {
 		this.salary = salary;
 	}
+	
+	@Override
+	public String toString() {
+		return "Employee name: " + this.full_name + " - " + "Role: " + this.role + " - " + "Salary: " + this.salary + "\n";
+	}
 }
+
+
