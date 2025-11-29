@@ -5,7 +5,7 @@ public class Recipe {
 	private int ingredient_id;
 	private double quantity_needed;
 	
-	Recipe(int item_id, int ingredient_id, double quantity) {
+	public Recipe(int item_id, int ingredient_id, double quantity) {
 		this.item_id = item_id;
 		this.ingredient_id = ingredient_id;
 		this.quantity_needed = quantity;
@@ -23,7 +23,7 @@ public class Recipe {
 	}
 	
 	// Setters
-	void setQuantityNeeded(double quantity) {
+	public void setQuantityNeeded(double quantity) {
 		this.quantity_needed = quantity;
 	}
 }
