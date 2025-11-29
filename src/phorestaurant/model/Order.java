@@ -53,8 +53,19 @@ public abstract class Order {
 	public int getEmployeeID() {
 		return this.employee_id;
 	}
+
 	
 	// Setters
+
+	public List<OrderItem> getItems() {
+	    return this.items;
+	}
+	
+	// Setters
+	public void setOrderId(int id) {
+		this.order_id = id;
+	}
+
 	public void setOrderStatus(String status) {
 		this.order_status = status;
 	}

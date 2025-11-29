@@ -2,13 +2,13 @@ package phorestaurant.model;
 
 public class Ingredients {
 	private int ingredient_id;
-	private String ingredient_name;
+	private String name;
 	private double stock_quantity;
 	private String unit;
 	
 	// New ingredients
 	public Ingredients(String name, double quantity, String unit) {
-		this.ingredient_name = name;
+		this.name = name;
 		this.stock_quantity = quantity;
 		this.unit = unit;
 	}
@@ -16,7 +16,7 @@ public class Ingredients {
 	// Load ingredients from DB
 	public Ingredients(int id, String name, double stockQuantity, String unit) {
         this.ingredient_id = id;
-        this.ingredient_name = name;
+        this.name = name;
         this.stock_quantity = stockQuantity;
         this.unit = unit;
     }
@@ -26,7 +26,7 @@ public class Ingredients {
 		return this.ingredient_id;
 	}
 	public String getName() {
-		return this.ingredient_name;
+		return this.name;
 	}
 	public double getStockQuantity() {
 		return this.stock_quantity;
@@ -40,7 +40,7 @@ public class Ingredients {
 		this.ingredient_id = id;
 	}
 	public void setName(String name) {
-		this.ingredient_name = name;
+		this.name = name;
 	}
 	
 	public void setStockQuantity(double quantity) {
@@ -53,7 +53,7 @@ public class Ingredients {
 	
 	@Override
 	public String toString() {
-		return this.ingredient_name + ": " + this.ingredient_name + "\n"
+		return this.name + ": " + this.name + "\n"
 				+ "In stock: " + this.stock_quantity + " (" + this.unit + ")\n";
 	}
 }
