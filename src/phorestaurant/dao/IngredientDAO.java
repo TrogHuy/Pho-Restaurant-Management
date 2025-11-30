@@ -122,4 +122,21 @@ public class IngredientDAO {
 			}
 		}
 	}
+	
+	public double getCurrentStock(int ingredient_id) {
+		String sql = "SELECT stock_quantity FROM Ingredients WHERE ingredient_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             
+             stmt.setInt(1, ingredient_id);
+             ResultSet rs = stmt.executeQuery();
+             
+             if (rs.next()) {
+                 return rs.getDouble("stock_quantity");
+             }
+        } catch (SQLException e) { 
+            e.printStackTrace();
+        }
+        return 0.0;
+	}
 }
