@@ -360,7 +360,7 @@ public class View extends Application {
              roleBox.getSelectionModel().clearSelection();
              refreshEmployeeTable(table);
          } else {
-             statusLabel.setText("Add failed (maybe not manager, or salary too low).");
+             statusLabel.setText("Add failed (Not manager or Salary < 100000 VND).");
          }
      });
 
@@ -719,7 +719,7 @@ public class View extends Application {
 	          refreshAllOrdersTable(allOrdersTable);
 	          reloadInventoryTable();  // your existing inventory refresher
 	      } else {
-	          orderStatusLabel.setText("Failed to place order.");
+	          orderStatusLabel.setText("Failed to place order, not enough stocks");
 	      }
 	  });
 	
@@ -789,6 +789,18 @@ public class View extends Application {
 
 	    TableColumn<Ingredients, Double> colStock = new TableColumn<>("Stock");
 	    colStock.setCellValueFactory(new PropertyValueFactory<>("stockQuantity"));
+	    
+	    colStock.setCellFactory(column -> new TableCell<Ingredients, Double>() {
+	        @Override
+	        protected void updateItem(Double value, boolean empty) {
+	            super.updateItem(value, empty);
+	            if (empty || value == null) {
+	                setText(null);
+	            } else {
+	                setText(String.format("%.1f", value));   // 1 decimal place
+	            }
+	        }
+	    });
 
 	    TableColumn<Ingredients, String> colUnit = new TableColumn<>("Unit");
 	    colUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
