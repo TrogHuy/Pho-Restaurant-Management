@@ -597,7 +597,7 @@ public class View extends Application {
 	  TableColumn<Order, Void> actionCol = new TableColumn<>("Actions");
 	  actionCol.setCellFactory(col -> new TableCell<>() {
 	      private final Button completeBtn = new Button("Complete");
-	      private final Button cancelBtn = new Button("Cancel");
+	      private final Button cancelBtn = new Button("Cancels");
 	      private final HBox box = new HBox(5, completeBtn, cancelBtn);
 	
 	      {
@@ -605,12 +605,14 @@ public class View extends Application {
 	              Order o = getTableView().getItems().get(getIndex());
 	              if (orderController.completeOrder(o.getID())) {
 	                  refreshAllOrdersTable(allOrdersTable);
+	                  reloadInventoryTable();
 	              }
 	          });
 	
 	          cancelBtn.setOnAction(e -> {
 	              Order o = getTableView().getItems().get(getIndex());
 	              if (orderController.cancelOrder(o.getID())) {
+	            	  reloadInventoryTable();
 	                  refreshAllOrdersTable(allOrdersTable);
 	              }
 	          });
