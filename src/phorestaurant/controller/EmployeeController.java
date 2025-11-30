@@ -47,6 +47,7 @@ public class EmployeeController {
 		
 		if(salary < 100000) {
 			System.out.println("Salary must greater than 100,000 VND.");
+			return false;
 		}
 		
 		Employee new_emp = new Employee(name, role);

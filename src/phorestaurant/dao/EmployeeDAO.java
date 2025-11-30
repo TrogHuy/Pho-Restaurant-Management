@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class EmployeeDAO {
+public class EmployeeDAO implements IEmployeeDAO {
 	private static final Logger LOGGER = Logger.getLogger(EmployeeDAO.class.getName());
 	
+	@Override
 	public Employee getEmployeeById(int id) {
 		String sql = "SELECT * FROM Employees WHERE employee_id = ?";
 		try ( Connection conn = DatabaseConnection.getConnection(); 
@@ -35,6 +36,7 @@ public class EmployeeDAO {
 		return null;
 	}
 	
+	@Override
 	public boolean addEmployee(Employee emp) {
 		String sql = "INSERT INTO Employees (full_name, role, salary) VALUES (?, ?, ?)";
 		try ( Connection conn = DatabaseConnection.getConnection();
@@ -97,6 +99,7 @@ public class EmployeeDAO {
 		}
 	}
 	
+	@Override
 	public List<Employee> getAllEmployees() {
 		List<Employee> list = new ArrayList<>();
 		String sql = "SELECT * FROM Employees";

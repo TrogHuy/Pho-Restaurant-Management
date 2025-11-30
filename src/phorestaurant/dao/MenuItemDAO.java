@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-public class MenuItemDAO {
+public class MenuItemDAO implements IMenuItemDAO {
 	private static final Logger LOGGER = Logger.getLogger(MenuItemDAO.class.getName());
 	
+	@Override
 	public List<MenuItem> getAllMenuItems() {
 		List<MenuItem> menu = new ArrayList<>();
 		String sql = "SELECT * FROM Menu_items";
@@ -35,6 +36,7 @@ public class MenuItemDAO {
 		return menu;
 	}
 	
+	@Override
 	public MenuItem getItemById(int id) {
 		String sql = "SELECT * FROM Menu_items WHERE item_id = ?";
 		try(Connection conn = DatabaseConnection.getConnection();
@@ -57,6 +59,8 @@ public class MenuItemDAO {
 		}
 		return null;
 	}
+	
+	@Override
 	public List<MenuItem> searchItems(String keyword) {
 		List<MenuItem> menu = new ArrayList<>();
 		String sql = "SELECT * FROM Menu_items WHERE name LIKE ?";
@@ -81,6 +85,7 @@ public class MenuItemDAO {
 		return menu;
 	}
 	
+	@Override
 	public boolean addMenuItem(MenuItem item) {
 		String sql = "INSERT INTO Menu_items (name, description, price, category) VALUES (?,?,?,?)";
 		try(Connection conn = DatabaseConnection.getConnection();
@@ -96,6 +101,7 @@ public class MenuItemDAO {
 		}
 	}
 	
+	@Override
 	public boolean deleteMenuItem(int id) {
 		String delete_recipe_sql = "DELETE FROM Recipes where item_id = ?";
 		String delete_menu_item = "DELETE FROM Menu_items where item_id = ?";

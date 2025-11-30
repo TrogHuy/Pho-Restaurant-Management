@@ -71,38 +71,48 @@ CREATE TABLE Transactions (
 );
 
 INSERT INTO employees (full_name, role, salary) VALUES 
-('Nguyen Van An', 'Manager', 15000000),
-('Tran Thi Binh', 'Staff', 5000000),
-('Le Van Cuong', 'Staff', 4500000),
-('Nguyen Trong Huy', 'Manager', 30000000),
-('Nguyen Xuan Anh Khoa', 'Janitor', 100000);
-
+('Nguyen Van An', 'Manager', 15000000),	-- 1
+('Tran Thi Binh', 'Staff', 5000000),	-- 2
+('Le Van Cuong', 'Staff', 4500000),		-- 3
+('Nguyen Trong Huy', 'Manager', 30000000),	-- 4
+('Nguyen Xuan Anh Khoa', 'Staff', 100000);	-- 5
 
 INSERT INTO ingredients (name, stock_quantity, unit) VALUES 
-('Rice Noodles (Banh Pho)', 50.0, 'kg'),
-('Beef Tenderloin (Thit Bo)', 20.0, 'kg'),
-('Chicken Breast (Thit Ga)', 15.0, 'kg'),
-('Beef Broth', 100.0, 'liters'),
-('Chicken Broth', 80.0, 'liters'),
-('Green Onions', 5.0, 'kg'),
-('Bean Sprouts', 10.0, 'kg'),
-('Coffee Beans', 2.0, 'kg'),
-('Condensed Milk', 20.0, 'cans');
+('Rice Noodles (Banh Pho)', 50.0, 'kg'),	-- ID 1
+('Beef Tenderloin (Thit Bo)', 20.0, 'kg'),  -- ID 2
+('Chicken Breast (Thit Ga)', 15.0, 'kg'), -- ID 3
+('Beef Broth', 100.0, 'liters'),	-- ID 4
+('Chicken Broth', 80.0, 'liters'),	-- ID 5
+('Shrimp (Tom)', 5.0, 'kg'), 		-- ID 6
+('Rice Paper (Banh Trang)', 500, 'sheets'), -- ID 7
+('Ground Pork (Thit Heo Xay)', 10.0, 'kg'), -- ID 8
+('Wheat Flour (Bot Mi)', 20.0, 'kg'),       -- ID 9
+('Cooking Oil', 10.0, 'liters'),          -- ID 10
+('Green Onions', 5.0, 'kg'),			-- ID 11
+('Bean Sprouts', 10.0, 'kg'),			-- ID 12
+('Coffee Beans', 2.0, 'kg'),			-- ID 13
+('Condensed Milk', 20.0, 'cans'),		-- ID 14
+('Dried Tea Leaves', 5.0, 'kg');		-- ID 15
 
 INSERT INTO menu_items (name, description, price, category) VALUES 
-('Pho Tai', 'Beef noodle soup with rare steak', 55000, 'Pho'),
-('Pho Chin', 'Beef noodle soup with well-done brisket', 55000, 'Pho'),
-('Pho Ga', 'Chicken noodle soup', 50000, 'Pho'),
-('Goi Cuon', 'Fresh spring rolls with shrimp (2 pcs)', 25000, 'Side Dish'),
-('Cha Gio', 'Fried spring rolls (3 pcs)', 30000, 'Side Dish'),
-('Banh Quay', 'Fried bread stick (1 pc)', 3000, 'Side Dish'),
-('Cafe Sua Da', 'Vietnamese iced coffee with condensed milk', 25000, 'Drink'),
-('Tra Da', 'Iced tea', 5000, 'Drink');
+('Pho Tai', 'Beef noodle soup with rare steak', 55000, 'Pho'), -- 1
+('Pho Chin', 'Beef noodle soup with well-done brisket', 55000, 'Pho'), -- 2
+('Pho Ga', 'Chicken noodle soup', 50000, 'Pho'),				-- 3
+('Goi Cuon', 'Fresh spring rolls with shrimp (2 pcs)', 25000, 'Side Dish'),		-- 4
+('Cha Gio', 'Fried spring rolls (3 pcs)', 30000, 'Side Dish'),			-- 5
+('Banh Quay', 'Fried bread stick (1 pc)', 3000, 'Side Dish'),		-- 6
+('Cafe Sua Da', 'Vietnamese iced coffee with condensed milk', 25000, 'Drink'), -- 7
+('Tra Da', 'Iced tea', 5000, 'Drink'); 		-- 8
 
 INSERT INTO recipes (item_id, ingredient_id, quantity_needed) VALUES 
-(1, 1, 0.15), (1, 2, 0.1), (1, 4, 0.4), (1, 6, 0.01), -- Pho Tai
+(1, 1, 0.15), (1, 2, 0.1), (1, 4, 0.4), (1, 11, 0.01), -- Pho Tai
+(2, 1, 0.15), (2, 2, 0.1), (2, 4, 0.4), (2, 11, 0.01), -- Pho chin
 (3, 1, 0.15), (3, 3, 0.1), (3, 5, 0.4), -- Pho Ga
-(6, 8, 0.02), (6, 9, 0.1); -- Cafe Sua Da
+(4, 7, 2), (4, 6, 0.05), (4, 1, 0.02), (4, 11, 0.01), -- Goi cuon
+(5, 7, 3), (5, 8, 0.1), (5, 10, 0.05), -- Cha gio
+(6, 9, 0.1), (6, 10, 0.05), -- Banh quay
+(7, 13, 0.02), (7, 14, 0.1), -- Cafe Sua Da
+(8, 15, 0.05); -- Tra da
 
 INSERT INTO orders (order_type, order_status, total_price, order_timestamp, employee_id) VALUES 
 ('DineIn', 'Completed', 135000, '2023-10-01 12:30:00', 2),
@@ -114,7 +124,7 @@ INSERT INTO order_items (order_id, item_id, quantity, subtotal) VALUES
 (1, 1, 2, 110000), (1, 6, 1, 25000), -- Order 1: 2 Pho Tai, 1 Cafe
 (2, 3, 1, 50000), (2, 7, 2, 10000), -- Order 2: 1 Pho Ga, 2 Tra Da
 (3, 2, 1, 55000),                   -- Order 3: 1 Pho Chin
-(4, 1, 1, 55000), (4, 6, 1, 25000); 
+(4, 1, 1, 55000), (4, 6, 1, 25000); -- Order 4: 1 Pho Tai, 1 Banh quay
 
 INSERT INTO transactions (order_id, payment_method, amount_paid, transaction_timestamp) VALUES 
 (1, 'Cash', 135000, '2023-10-01 13:15:00'),

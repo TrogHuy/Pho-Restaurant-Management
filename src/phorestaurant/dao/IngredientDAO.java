@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-public class IngredientDAO {
+public class IngredientDAO implements IIngredientDAO {
 	private static final Logger LOGGER = Logger.getLogger(IngredientDAO.class.getName());
 	
+	@Override
 	public List<Ingredients> getAllIngredients() {
 		List<Ingredients> list = new ArrayList<>();
 		String sql = "SELECT * FROM Ingredients";
@@ -33,6 +34,7 @@ public class IngredientDAO {
 		return list;
 	}
 	
+	@Override
 	public boolean updateStock(int id, double changed_quantity) {
 		String sql = "UPDATE Ingredients SET stock_quantity = stock_quantity + ? WHERE ingredient_id = ?";
 		
@@ -51,6 +53,7 @@ public class IngredientDAO {
 		}
 	}
 	
+	@Override
 	public boolean isStockLow(int ingredient_id, double threshold) {
 		String sql = "SELECT stock_quantity FROM Ingredients WHERE ingredient_id = ?";
 		
@@ -67,6 +70,7 @@ public class IngredientDAO {
 		return false;
 	}
 	
+	@Override
 	public boolean addIngredient(Ingredients ingredient) {
 		String sql = "INSERT INTO Ingredients (ingredient_id, name, stock_quantity, unit) VALUES (?,?,?,?)";
 		try(Connection conn = DatabaseConnection.getConnection();
@@ -83,6 +87,7 @@ public class IngredientDAO {
 		}
 	}
 	
+	@Override
 	public boolean deleteIngredient(int id) {
 		String delete_fk_sql = "DELETE FROM Recipes WHERE ingredient_id = ?";
 		String delete_target_sql = "DELETE FROM Ingredients WHERE ingredient_id = ?";
@@ -121,5 +126,23 @@ public class IngredientDAO {
 				catch(SQLException e) {e.printStackTrace();}
 			}
 		}
+	}
+	
+	@Override
+	public double getCurrentStock(int ingredient_id) {
+		String sql = "SELECT stock_quantity FROM Ingredients WHERE ingredient_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             
+             stmt.setInt(1, ingredient_id);
+             ResultSet rs = stmt.executeQuery();
+             
+             if (rs.next()) {
+                 return rs.getDouble("stock_quantity");
+             }
+        } catch (SQLException e) { 
+            e.printStackTrace();
+        }
+        return 0.0;
 	}
 }

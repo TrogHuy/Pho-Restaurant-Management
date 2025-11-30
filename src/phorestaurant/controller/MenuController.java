@@ -45,6 +45,9 @@ public class MenuController {
         Recipe r = new Recipe(itemId, ingredientId, qty);
         return recipe_dao.addRecipe(r);
     }
-
+    
+    public List<Recipe> getRecipeForItem(int itemId) {
+        return recipe_dao.getRecipeForMenuItem(itemId);
+    }
     
 }

@@ -4,6 +4,9 @@ import phorestaurant.model.*;
 import phorestaurant.util.UserSession;
 import phorestaurant.dao.*;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+
 
 
 public class OrderController {
@@ -31,14 +34,37 @@ public class OrderController {
 			return new DineInOrder(emp_id);
 	}
 	
-	public void addItemToDraft(Order order, int item_id, int quantity) {
-		if(quantity <= 0) return;
+	public boolean addItemToDraft(Order order, int item_id, int quantity) {
+		if(quantity <= 0) return false;
+		
+		if(!isStockSufficient(item_id, quantity)) {
+			System.out.println("Cannot add item: Insufficient inventory!");
+			return false;
+		}
 		
 		MenuItem item = menu_item_dao.getItemById(item_id);
 		if(item != null) {
-			OrderItem line_item = new OrderItem(0, item, quantity);
-			order.addItem(line_item);
+			order.addItem(new OrderItem(0, item, quantity));
+			System.out.println("Item added to cart.");
+			return true;
 		}
+		return false;
+	}
+	
+	private boolean isStockSufficient(int item_id, int quantity) {
+		List<Recipe> recipe_lines = recipe_dao.getRecipeForMenuItem(item_id);
+		
+		for(Recipe line : recipe_lines) {
+			double required = line.getQuantityNeeded() * quantity;
+			double available = ingredient_dao.getCurrentStock(line.getIngredientID());
+			
+			if(available < required) {
+				System.out.println("Low stock: Ingredient ID: " + line.getIngredientID() + 
+						" (Have: " + available + ", Need: " + required + ")");
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public boolean placeOrder(Order order) {
@@ -47,10 +73,15 @@ public class OrderController {
 			return false;
 		}
 		
+		if (!validateTotalOrderStock(order)) {
+            System.out.println("Order Blocked: Inventory became insufficient.");
+            return false;
+        }
+		
 		boolean save_success = order_dao.saveOrder(order);
 		if(save_success) {
 			System.out.println("Order saved successfully.");
-			updateInventoryForOrder(order, true);
+			updateInventoryForOrder(order, false);
 			return true;
 		}
 		else {
@@ -59,7 +90,36 @@ public class OrderController {
 		}
 	}
 	
-	private void updateInventoryForOrder(Order order, boolean is_selling) {
+	private boolean validateTotalOrderStock(Order order) {
+		// <Ingredient id, amount needed>
+		Map<Integer, Double> total_usage = new HashMap<>();
+		
+		for(OrderItem order_item : order.getItems()) {
+			int menu_item_id = order_item.getMenuItem().getID();
+			int qty_ordered = order_item.getQuantity();
+			List<Recipe> recipe_lines = recipe_dao.getRecipeForMenuItem(menu_item_id);
+			
+			for(Recipe line : recipe_lines) {
+				int ingredient_id = line.getIngredientID();
+				double amt_needed = line.getQuantityNeeded() * qty_ordered;
+				total_usage.put(ingredient_id, total_usage.getOrDefault(ingredient_id, 0.0) + amt_needed);
+			}
+		}
+		
+		for (Map.Entry<Integer, Double> entry : total_usage.entrySet()) {
+			int ingredient_id = entry.getKey();
+			double total_needed = entry.getValue();
+			double available = ingredient_dao.getCurrentStock(ingredient_id);
+			
+			if(available < total_needed) {
+				System.out.println("Low stock for Ingredient ID: " + ingredient_id);
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private void updateInventoryForOrder(Order order, boolean is_restocking) {
 		for(OrderItem order_item : order.getItems()) {
 			int menu_item_id = order_item.getMenuItem().getID();
 			int qty_sold = order_item.getQuantity();
@@ -72,7 +132,7 @@ public class OrderController {
 				
 				double total_change = qty_needed * qty_sold;
 				
-				if(is_selling) 
+				if(!is_restocking) 
 					total_change *= -1;
 				
 				ingredient_dao.updateStock(ingredient_id, total_change);
@@ -105,5 +165,8 @@ public class OrderController {
 			return true;
 		}
 		return false;
+	}
+	public List<Order> getAllOrders() {
+	    return order_dao.getAllOrders();
 	}
 }

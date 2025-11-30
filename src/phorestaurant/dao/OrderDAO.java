@@ -5,10 +5,13 @@ import phorestaurant.util.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
-public class OrderDAO {
+public class OrderDAO implements IOrderDAO {
 	private static final Logger LOGGER = Logger.getLogger(OrderDAO.class.getName());
 	
+	@Override
 	public boolean saveOrder(Order order) {
 		String insertOrderSQL = "INSERT INTO Orders (order_type, order_status, total_price, employee_id) VALUES (?, ?, ?, ?)";
 		String insertItemSQL = "INSERT INTO Order_items (order_id, item_id, quantity, subtotal) VALUES (?, ?, ?, ?)";
@@ -73,6 +76,7 @@ public class OrderDAO {
 			}
 	}
 	
+	@Override
 	public boolean updateOrderStatus(int id, String status) {
 		String sql = "UPDATE Orders SET order_status = ? WHERE order_id = ?";
 		
@@ -87,6 +91,7 @@ public class OrderDAO {
 		}
 	}
 	
+	@Override
 	public Order getOrderById(int id) {
 		Order order = null;
 		String order_sql = "SELECT * FROM Orders WHERE order_id = ?";
@@ -131,6 +136,50 @@ public class OrderDAO {
 		return order;
 	}
 	
+	@Override
+	public List<Order> getAllOrders() {
+	    List<Order> orders = new ArrayList<>();
+
+	    String sql = "SELECT order_id, order_type, order_status, total_price, employee_id " +
+	                 "FROM Orders ORDER BY order_id DESC";
+
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            int id       = rs.getInt("order_id");
+	            String type  = rs.getString("order_type");
+	            String status= rs.getString("order_status");
+	            double total = rs.getDouble("total_price");
+	            int empId    = rs.getInt("employee_id");
+
+	            Order o;
+	            if (type.equalsIgnoreCase("Grab")) {
+	                o = new GrabOrder(empId);
+	            } else if (type.equalsIgnoreCase("Pickup")) {
+	                o = new PickUpOrder(empId);
+	            } else {
+	                o = new DineInOrder(empId);
+	            }
+
+	            o.setOrderId(id);
+	            o.setOrderStatus(status);
+	            o.setTotalPrice(total);
+
+	            orders.add(o);
+	        }
+
+	    } catch (SQLException e) {
+	        LOGGER.log(Level.SEVERE, "Error loading all orders", e);
+	        throw new DataAccessException("Failed to retrieve all orders.", e);
+	    }
+
+	    return orders;
+	}
+	
 }
+
+
 
 
