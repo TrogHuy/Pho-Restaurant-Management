@@ -5,6 +5,8 @@ import phorestaurant.util.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDAO {
 	private static final Logger LOGGER = Logger.getLogger(OrderDAO.class.getName());
@@ -130,7 +132,49 @@ public class OrderDAO {
 		}
 		return order;
 	}
+	public List<Order> getAllOrders() {
+	    List<Order> orders = new ArrayList<>();
+
+	    String sql = "SELECT order_id, order_type, order_status, total_price, employee_id " +
+	                 "FROM Orders ORDER BY order_id DESC";
+
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            int id       = rs.getInt("order_id");
+	            String type  = rs.getString("order_type");
+	            String status= rs.getString("order_status");
+	            double total = rs.getDouble("total_price");
+	            int empId    = rs.getInt("employee_id");
+
+	            Order o;
+	            if (type.equalsIgnoreCase("Grab")) {
+	                o = new GrabOrder(empId);
+	            } else if (type.equalsIgnoreCase("Pickup")) {
+	                o = new PickUpOrder(empId);
+	            } else {
+	                o = new DineInOrder(empId);
+	            }
+
+	            o.setOrderId(id);
+	            o.setOrderStatus(status);
+	            o.setTotalPrice(total);
+
+	            orders.add(o);
+	        }
+
+	    } catch (SQLException e) {
+	        LOGGER.log(Level.SEVERE, "Error loading all orders", e);
+	        throw new DataAccessException("Failed to retrieve all orders.", e);
+	    }
+
+	    return orders;
+	}
 	
 }
+
+
 
 

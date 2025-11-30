@@ -3,8 +3,11 @@ package phorestaurant.dao;
 import phorestaurant.util.*;
 import phorestaurant.model.Transaction;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionDAO {
 	private static final Logger LOGGER = Logger.getLogger(TransactionDAO.class.getName());
@@ -40,4 +43,35 @@ public class TransactionDAO {
 		}
 		return 0.0;
 	}
+	
+	public List<Transaction> getAllTransactions() {
+	    String sql = "SELECT transaction_id, order_id, payment_method, amount_paid, transaction_timestamp "
+	               + "FROM transactions ORDER BY transaction_id";
+
+	    List<Transaction> list = new ArrayList<>();
+
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+
+	        while (rs.next()) {
+	            int transId = rs.getInt("transaction_id");
+	            int orderId = rs.getInt("order_id");
+	            String method = rs.getString("payment_method");
+	            double amount = rs.getDouble("amount_paid");
+	            LocalDateTime ts = rs.getTimestamp("transaction_timestamp").toLocalDateTime();
+
+	            // ⚠️ adjust this part to match your Transaction class
+	            Transaction t = new Transaction(orderId, method, amount, ts);
+	            t.setTransId(transId);   // or use another constructor if you have one
+
+	            list.add(t);
+	        }
+	    } catch (SQLException e) {
+	        LOGGER.log(Level.SEVERE, "Error fetching transactions", e);
+	        throw new DataAccessException("Cannot retrieve transactions list", e);
+	    }
+	    return list;
+	}
+
 }

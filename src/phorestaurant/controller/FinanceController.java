@@ -2,7 +2,10 @@ package phorestaurant.controller;
 
 import phorestaurant.dao.TransactionDAO;
 import phorestaurant.model.Transaction;
+import phorestaurant.util.UserSession;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FinanceController {
 	private TransactionDAO transaction_dao;
@@ -31,6 +34,14 @@ public class FinanceController {
 	}
 	
 	public double getTotalRevenue() {
+		if(!UserSession.getInstance().isManager()) {
+			System.out.println("Access denied: Only managers can view financial reports.");
+			return -1;
+		}
 		return transaction_dao.getTotalRevenue();
+	}
+	
+	public List<Transaction> getAllTransactions() {
+	    return transaction_dao.getAllTransactions();
 	}
 }

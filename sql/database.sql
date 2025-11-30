@@ -74,7 +74,7 @@ INSERT INTO employees (full_name, role, salary) VALUES
 ('Nguyen Van An', 'Manager', 15000000),
 ('Tran Thi Binh', 'Staff', 5000000),
 ('Le Van Cuong', 'Staff', 4500000),
-('Nguyen Trong Huy', 'Owner', 30000000),
+('Nguyen Trong Huy', 'Manager', 30000000),
 ('Nguyen Xuan Anh Khoa', 'Janitor', 100000);
 
 

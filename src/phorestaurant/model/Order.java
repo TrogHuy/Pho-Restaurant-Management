@@ -53,8 +53,14 @@ public abstract class Order {
 	public int getEmployeeID() {
 		return this.employee_id;
 	}
+	public List<OrderItem> getItems() {
+	    return this.items;
+	}
 	
 	// Setters
+	public void setOrderId(int id) {
+		this.order_id = id;
+	}
 	public void setOrderStatus(String status) {
 		this.order_status = status;
 	}
@@ -64,4 +70,19 @@ public abstract class Order {
 	public void assignEmployee(int id) {
 		this.employee_id = id;
 	}
+
+	public void setTotalPrice(double total) {
+		this.total_price = total;	
+	}
+    public void removeItem(OrderItem item) {
+        items.remove(item);
+        recalcTotal();
+    }
+    private void recalcTotal() {
+        double sum = 0.0;
+        for (OrderItem it : items) {
+            sum += it.getSubTotal();
+        }
+        this.total_price = sum;
+    }
 }

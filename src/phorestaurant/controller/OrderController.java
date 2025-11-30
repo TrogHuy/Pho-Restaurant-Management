@@ -106,4 +106,7 @@ public class OrderController {
 		}
 		return false;
 	}
+	public List<Order> getAllOrders() {
+	    return order_dao.getAllOrders();
+	}
 }
