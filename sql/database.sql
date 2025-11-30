@@ -75,7 +75,7 @@ INSERT INTO employees (full_name, role, salary) VALUES
 ('Tran Thi Binh', 'Staff', 5000000),
 ('Le Van Cuong', 'Staff', 4500000),
 ('Nguyen Trong Huy', 'Manager', 30000000),
-('Nguyen Xuan Anh Khoa', 'Janitor', 100000);
+('Nguyen Xuan Anh Khoa', 'Staff', 100000);
 
 
 INSERT INTO ingredients (name, stock_quantity, unit) VALUES 
