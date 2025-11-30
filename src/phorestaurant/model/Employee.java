@@ -9,7 +9,7 @@ public class Employee {
 	// New employee
 	public Employee(String full_name, String role) {
 		this.full_name = full_name;
-		this.role = role;
+		this.role = role; 
 	}
 	
 	// Load employee from DB
