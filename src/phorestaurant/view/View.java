@@ -679,10 +679,19 @@ public class View extends Application {
 
 		    try {
 		        int qty = Integer.parseInt(qtyText);
-		        orderController.addItemToDraft(currentOrder, selected.getID(), qty);
-		        refreshOrderTable(orderTable);
-		        orderTotalLabel.setText("Total: " + currentOrder.getTotalPrice());
-		        orderStatusLabel.setText("Item added.");
+
+		        boolean added = orderController.addItemToDraft(currentOrder, selected.getID(), qty);
+
+		        if (added) {
+		            refreshOrderTable(orderTable);
+		            orderTotalLabel.setText("Total: " + currentOrder.getTotalPrice());
+		            orderStatusLabel.setText("Item added.");
+		        } else {
+		            orderStatusLabel.setText("Not enough item stocks!");
+		        }
+
+		        return;
+
 		    } catch (NumberFormatException ex) {
 		        orderStatusLabel.setText("Qty must be a number.");
 		    }
