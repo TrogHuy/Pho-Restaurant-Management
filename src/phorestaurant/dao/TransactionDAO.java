@@ -9,9 +9,10 @@ import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionDAO {
+public class TransactionDAO implements ITransactionDAO {
 	private static final Logger LOGGER = Logger.getLogger(TransactionDAO.class.getName());
 	
+	@Override
 	public boolean saveTransaction(Transaction trans) {
 		String sql = "INSERT INTO Transactions (order_id, payment_method, amount_paid, transaction_timestamp)"
 				+ " VALUES (?, ?, ?, ?)";
@@ -29,6 +30,7 @@ public class TransactionDAO {
 		}
 	}
 	
+	@Override
 	public double getTotalRevenue() {
 		String sql = "SELECT Sum(amount_paid) FROM transactions";
 		
@@ -44,6 +46,7 @@ public class TransactionDAO {
 		return 0.0;
 	}
 	
+	@Override
 	public List<Transaction> getAllTransactions() {
 	    String sql = "SELECT transaction_id, order_id, payment_method, amount_paid, transaction_timestamp "
 	               + "FROM transactions ORDER BY transaction_id";

@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 
-public class RecipeDAO {
+public class RecipeDAO implements IRecipeDAO {
 	public static final Logger LOGGER = Logger.getLogger(RecipeDAO.class.getName());
 	
+	@Override
 	public List<Recipe> getRecipeForMenuItem(int item_id) {
 		String sql = "SELECT * FROM Recipes WHERE item_id = ?";
 		List<Recipe> recipe_list = new ArrayList<>();
@@ -35,6 +36,7 @@ public class RecipeDAO {
 		return recipe_list;
 	}
 	
+	@Override
 	public boolean addRecipe(Recipe recipe) {
 		String sql = "INSERT INTO Recipes (item_id, ingredient_id, quantity_needed) VALUES (?, ?, ?)";
 		
@@ -51,6 +53,7 @@ public class RecipeDAO {
 		}
 	}
 	
+	@Override
 	public boolean updateRecipe(int item_id, int ingredient_id, double new_quantity) {
 		String sql = "UPDATE Recipes SET quantity_needed = ? WHERE item_id = ? AND ingredient_id = ?";
 		

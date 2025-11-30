@@ -8,9 +8,10 @@ import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDAO {
+public class OrderDAO implements IOrderDAO {
 	private static final Logger LOGGER = Logger.getLogger(OrderDAO.class.getName());
 	
+	@Override
 	public boolean saveOrder(Order order) {
 		String insertOrderSQL = "INSERT INTO Orders (order_type, order_status, total_price, employee_id) VALUES (?, ?, ?, ?)";
 		String insertItemSQL = "INSERT INTO Order_items (order_id, item_id, quantity, subtotal) VALUES (?, ?, ?, ?)";
@@ -75,6 +76,7 @@ public class OrderDAO {
 			}
 	}
 	
+	@Override
 	public boolean updateOrderStatus(int id, String status) {
 		String sql = "UPDATE Orders SET order_status = ? WHERE order_id = ?";
 		
@@ -89,6 +91,7 @@ public class OrderDAO {
 		}
 	}
 	
+	@Override
 	public Order getOrderById(int id) {
 		Order order = null;
 		String order_sql = "SELECT * FROM Orders WHERE order_id = ?";
@@ -132,6 +135,8 @@ public class OrderDAO {
 		}
 		return order;
 	}
+	
+	@Override
 	public List<Order> getAllOrders() {
 	    List<Order> orders = new ArrayList<>();
 
