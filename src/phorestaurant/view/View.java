@@ -170,7 +170,7 @@ public class View extends Application {
 
         Label roleLabel = new Label("Role:");
         ComboBox<String> roleBox = new ComboBox<>();
-        roleBox.getItems().addAll("Manager", "Staff", "Owner", "Janitor");
+        roleBox.getItems().addAll("Manager", "Staff");
         roleBox.setPromptText("Select role");
 
         Button loginButton = new Button("Login");
