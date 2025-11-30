@@ -60,7 +60,7 @@ public class OrderController {
 			
 			if(available < required) {
 				System.out.println("Low stock: Ingredient ID: " + line.getIngredientID() + 
-						" (Have: " + available + ", Need: )" + required);
+						" (Have: " + available + ", Need: " + required + ")");
 				return false;
 			}
 		}
