@@ -612,6 +612,7 @@ public class View extends Application {
 	              Order o = getTableView().getItems().get(getIndex());
 	              if (orderController.cancelOrder(o.getID())) {
 	                  refreshAllOrdersTable(allOrdersTable);
+	                  reloadInventoryTable();
 	              }
 	          });
 	      }

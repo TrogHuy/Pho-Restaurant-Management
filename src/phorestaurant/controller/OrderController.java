@@ -81,7 +81,7 @@ public class OrderController {
 		boolean save_success = order_dao.saveOrder(order);
 		if(save_success) {
 			System.out.println("Order saved successfully.");
-			updateInventoryForOrder(order, true);
+			updateInventoryForOrder(order, false);
 			return true;
 		}
 		else {
@@ -119,7 +119,7 @@ public class OrderController {
 		return true;
 	}
 	
-	private void updateInventoryForOrder(Order order, boolean is_selling) {
+	private void updateInventoryForOrder(Order order, boolean is_restocking) {
 		for(OrderItem order_item : order.getItems()) {
 			int menu_item_id = order_item.getMenuItem().getID();
 			int qty_sold = order_item.getQuantity();
@@ -132,7 +132,7 @@ public class OrderController {
 				
 				double total_change = qty_needed * qty_sold;
 				
-				if(is_selling) 
+				if(!is_restocking) 
 					total_change *= -1;
 				
 				ingredient_dao.updateStock(ingredient_id, total_change);
