@@ -319,7 +319,7 @@ public class View extends Application {
      nameField.setPromptText("Full name");
 
      ComboBox<String> roleBox = new ComboBox<>();
-     roleBox.getItems().addAll("Manager", "Staff", "Owner", "Janitor");
+     roleBox.getItems().addAll("Manager", "Staff");
      roleBox.setPromptText("Role");
 
      TextField salaryField = new TextField();
