@@ -707,6 +707,7 @@ public class View extends Application {
 		    refreshOrderTable(orderTable);
 		    orderTotalLabel.setText("Total: " + currentOrder.getTotalPrice());
 		    orderStatusLabel.setText("Item removed.");
+		    reloadInventoryTable();
 		});
 	
 	  placeOrderBtn.setOnAction(e -> {
@@ -726,7 +727,7 @@ public class View extends Application {
 	          refreshOrderTable(orderTable);
 	          orderTotalLabel.setText("Total: 0.0");
 	          refreshAllOrdersTable(allOrdersTable);
-	          reloadInventoryTable();  // your existing inventory refresher
+	          reloadInventoryTable();
 	      } else {
 	          orderStatusLabel.setText("Failed to place order, not enough stocks");
 	      }
